@@ -1,0 +1,25 @@
+# Environnements virtuels
+venv/
+env/
+.env
+
+# Fichiers de données (ne pas pusher les datasets volumineux ou confidentiels)
+enoncer_complet/
+data/
+*.json
+*.txt
+!requirements.txt
+!plan_interne.md
+
+# Fichiers Python compilés
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE et OS
+.vscode/
+.idea/
+.DS_Store
+
+# (Optionnel) Modèles pré-entraînés - Décommentez la ligne ci-dessous si les modèles sont trop gros pour GitHub (limite de 100 Mo)
+# models/*.pkl
