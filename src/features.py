@@ -68,10 +68,19 @@ def extract_features(users_df, posts_df):
     temporal_advanced = posts_df.groupby('author_id').apply(safe_cv, include_groups=False).reset_index()
     
     # --- IMPROVEMENT #3: Shared text detection (swarm bots) ---
-    # Count how many different authors posted each exact text
-    text_author_counts = posts_df.groupby('text')['author_id'].nunique().reset_index()
-    text_author_counts.columns = ['text', 'n_authors_with_text']
-    posts_with_sharing = posts_df.merge(text_author_counts, on='text', how='left')
+    # Normalize text to better catch variants (lowercase, no accents, no punctuation)
+    import unicodedata
+    def normalize_text(t):
+        if not isinstance(t, str): return ""
+        t = unicodedata.normalize('NFKD', t.lower()).encode('ASCII', 'ignore').decode('utf-8')
+        return re.sub(r'\s+', ' ', re.sub(r'[^\w\s]', '', t)).strip()
+        
+    posts_df['norm_text'] = posts_df['text'].apply(normalize_text)
+
+    # Count how many different authors posted each normalized text
+    text_author_counts = posts_df.groupby('norm_text')['author_id'].nunique().reset_index()
+    text_author_counts.columns = ['norm_text', 'n_authors_with_text']
+    posts_with_sharing = posts_df.merge(text_author_counts, on='norm_text', how='left')
     
     shared_stats = posts_with_sharing.groupby('author_id').agg(
         n_shared_texts=('n_authors_with_text', lambda x: (x > 1).sum()),

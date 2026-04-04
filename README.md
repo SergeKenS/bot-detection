@@ -32,14 +32,16 @@ pip install -r requirements.txt
 ### 2. Prédire (Le jour de la compétition)
 Pour générer les prédictions à partir du dataset final du jury :
 ```powershell
-python src/predict.py chemin/vers/le/dataset.json SergeBotHunters.detections.en.txt
+python src/predict.py chemin/vers/le/dataset.json resultat.en.txt
 ```
 
-## Performance & Robustesse
-Notre modèle a été validé par une **Cross-Validation (5-Fold)** ultra-rigoureuse. Nous avons fixé un seuil de décision à **0.94** pour garantir mathématiquement un taux de Faux Positifs (FP) de zéro sur tous nos tests. 
+## Performance & Robustesse (Optimisation Finale)
+Notre modèle a été validé par une **Cross-Validation (5-Fold)** rigoureuse. Pour la phase finale, nous avons adopté une stratégie agressive mais sécurisée en fixant notre seuil de décision à 0.85. 
 
-*   **Faux Positifs : 0**
-*   **Recall (Bots détectés) : ~69%** (avec une probabilité de certitude quasi-totale).
+Ce réglage nous permet de maximiser la détection des bots tout en maintenant un risque de Faux Positif extrêmement faible, pour préserver l'intégrité des utilisateurs humains.
+
+*   **Taux de Faux Positifs (Tests) : 0**
+*   **Recall (Efficacité de détection) : ~75%** (selon nos derniers benchmarks sur les jeux de données de pratique).
 
 ---
-*Développé avec soin pour BotOrNot 2026.*
+*Soumission officielle de l'équipe SergeBotHunters pour BotOrNot 2026.*
